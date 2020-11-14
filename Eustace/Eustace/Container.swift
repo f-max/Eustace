@@ -66,7 +66,7 @@ extension Container {
     }
 }
 
-extension Container {
+public extension Container {
     func disposeAll() {
         repo = [AnyHashable: Creator]()
         repoWithDependencies = [AnyHashable: CreatorWithDependencies]()

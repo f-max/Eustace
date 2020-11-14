@@ -10,6 +10,9 @@
 		50335E79256015DE00DE3AB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E78256015DE00DE3AB9 /* main.swift */; };
 		50335E7E256016AC00DE3AB9 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E7D256016AC00DE3AB9 /* Container.swift */; };
 		50335E82256017DE00DE3AB9 /* ContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E81256017DE00DE3AB9 /* ContainerTests.swift */; };
+		50335E84256043B200DE3AB9 /* CarBreakdownProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */; };
+		50335E8625604B2D00DE3AB9 /* Container+Cars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E8525604B2D00DE3AB9 /* Container+Cars.swift */; };
+		50335E882560531F00DE3AB9 /* CarComponentsClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */; };
 		508F5EF6256014F400DAD5F7 /* Eustace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508F5EEC256014F300DAD5F7 /* Eustace.framework */; };
 		508F5EFD256014F400DAD5F7 /* Eustace.h in Headers */ = {isa = PBXBuildFile; fileRef = 508F5EEF256014F400DAD5F7 /* Eustace.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -41,6 +44,9 @@
 		50335E78256015DE00DE3AB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		50335E7D256016AC00DE3AB9 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		50335E81256017DE00DE3AB9 /* ContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerTests.swift; sourceTree = "<group>"; };
+		50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarBreakdownProtocols.swift; sourceTree = "<group>"; };
+		50335E8525604B2D00DE3AB9 /* Container+Cars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+Cars.swift"; sourceTree = "<group>"; };
+		50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarComponentsClasses.swift; sourceTree = "<group>"; };
 		508F5EEC256014F300DAD5F7 /* Eustace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eustace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508F5EEF256014F400DAD5F7 /* Eustace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Eustace.h; sourceTree = "<group>"; };
 		508F5EF0256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,6 +85,9 @@
 			isa = PBXGroup;
 			children = (
 				50335E78256015DE00DE3AB9 /* main.swift */,
+				50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */,
+				50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */,
+				50335E8525604B2D00DE3AB9 /* Container+Cars.swift */,
 			);
 			path = CarConfigurator;
 			sourceTree = "<group>";
@@ -255,6 +264,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50335E8625604B2D00DE3AB9 /* Container+Cars.swift in Sources */,
+				50335E84256043B200DE3AB9 /* CarBreakdownProtocols.swift in Sources */,
+				50335E882560531F00DE3AB9 /* CarComponentsClasses.swift in Sources */,
 				50335E79256015DE00DE3AB9 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
