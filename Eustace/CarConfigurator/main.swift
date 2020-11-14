@@ -11,3 +11,4 @@ import Eustace
 
 print("Hello, World!")
 
+let container = Container()
