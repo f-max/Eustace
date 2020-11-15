@@ -47,6 +47,7 @@
 		50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarBreakdownProtocols.swift; sourceTree = "<group>"; };
 		50335E8525604B2D00DE3AB9 /* Container+Cars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+Cars.swift"; sourceTree = "<group>"; };
 		50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarComponentsClasses.swift; sourceTree = "<group>"; };
+		50335E8925618CF200DE3AB9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		508F5EEC256014F300DAD5F7 /* Eustace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eustace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508F5EEF256014F400DAD5F7 /* Eustace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Eustace.h; sourceTree = "<group>"; };
 		508F5EF0256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		508F5EE2256014F300DAD5F7 = {
 			isa = PBXGroup;
 			children = (
+				50335E8925618CF200DE3AB9 /* README.md */,
 				508F5F062560150F00DAD5F7 /* IoC.playground */,
 				508F5EEE256014F300DAD5F7 /* Eustace */,
 				508F5EF9256014F400DAD5F7 /* EustaceTests */,
