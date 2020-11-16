@@ -6,11 +6,17 @@
 ### Abstract
 
 DI              dependency injection
+
 DIP            dependency inversion principle
+
 IoC             inversion of control
+
 IoC container
+
 Abstract Factory design pattern
+
 Service locator design pattern
+
 Creational design pattern
 
 
@@ -20,10 +26,15 @@ Whatever sentence you get, you'll be able to find someone out there who is teach
 I am no different and I want to propose my bit:
 
 Through `DI` you can achieve `DIP`
+
 `IoC container` implements `service locator design pattern`
+
 `IoC container` also implements `creational design pattern`
+
 Through `IoC container` you achieve `DI`  thus `DIP`
+
 `Abstract Factory`  belongs to `creational design pattern` family 
+
 Through `Abstract Factory` you can also achieve `DI`  thus `DIP` 
 
 An `IoC container` along with `Abstract Factory`, is one of the known standard solutions to implement automatic dependency injection.
