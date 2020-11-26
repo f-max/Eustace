@@ -9,8 +9,13 @@
 import Foundation
 
 public class Container {
-    private var repo = [AnyHashable: ()->Any?]()
+    enum Errors: Error {
+        case circularDependency
+    }
+    
+    private var repo = [AnyHashable: ()throws->Any?]()
     private var repoWithDependencies = [AnyHashable: ([Any])->Any?]()
+    private var resolvedTypes  = [String]()
     
     public init() {}
     
@@ -29,17 +34,26 @@ public class Container {
     /// - Parameters:
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - creator: the block which is supposed to return the instance which implements the serviceType above. This block will be called when calling 'resolve'
-    public func register<ServiceType>(serviceType: ServiceType.Type, creator: @escaping ()->ServiceType?) {
+    public func register<ServiceType>(serviceType: ServiceType.Type, creator: @escaping (()throws->ServiceType?) ) {
         let key = Container.key(service: serviceType)
         repo[key] = creator
     }
     
     /// Resolve: use resolve to get new instances of a given service type. The container will `resolve` the provided service type to a specific concrete implementation, according to the instructions previously provided by `register`. Returns nil if unable to find a match for the provided service type.
     /// - Parameter serviceType: the service type we want to resolve, the returned instance will assumably belong/subclass/conform to the provided service type
-    public func resolve<ServiceType>(serviceType: ServiceType.Type) -> ServiceType? {
+    public func resolve<ServiceType>(serviceType: ServiceType.Type) throws -> ServiceType? {
+        print("resolving")
         let key = Container.key(service: serviceType)
+
+        guard resolvedTypes.contains(key) == false else {
+            throw Errors.circularDependency
+        }
+        
         if let creator = repo[key] {
-            return creator() as? ServiceType
+            resolvedTypes.append(key)
+            let instance = try creator() as? ServiceType
+            resolvedTypes.removeLast()
+            return instance
         }
         return nil
     }
