@@ -59,10 +59,12 @@ Quite clearly, the three actions above turn out to be storing, fetching, and del
 
 ###  A few notes about circular dependencies
 
-Circular dependencies among objects or types in general are a known issue which should be avoided. An IoC container or a factory or any other tool will not solve the issue if the code which uses them has generated it by design.
+Circular dependencies among objects or types in general are a known issue which should be avoided. An IoC container or a factory or any other tool cannot always solve the issue if the code which uses them has generated it by design.
 
-Is is still container's user code responsibility to break circula dependencies witha a weak reference.
+Is is still container's user code responsibility to break circular dependencies with a weak reference, for instance
 
 If two classes hold mutual non-optional references, they are not instantiable and a container can't change this.
 
-Circular dependencies in the provided examples (e.g. Car <--> Chassis ) are resolved in the `register` phase, within the creator blocks which wisely create an object graph in the (hopefully) right order.
+Still, in some cases some help can be provided.
+
+This IoC container is able to detect circular dependencies within its resolve function, verifying that a given service type has not been resolve before.

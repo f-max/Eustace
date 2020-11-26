@@ -42,7 +42,6 @@ public class Container {
     /// Resolve: use resolve to get new instances of a given service type. The container will `resolve` the provided service type to a specific concrete implementation, according to the instructions previously provided by `register`. Returns nil if unable to find a match for the provided service type.
     /// - Parameter serviceType: the service type we want to resolve, the returned instance will assumably belong/subclass/conform to the provided service type
     public func resolve<ServiceType>(serviceType: ServiceType.Type) throws -> ServiceType? {
-        print("resolving")
         let key = Container.key(service: serviceType)
 
         guard resolvedTypes.contains(key) == false else {
@@ -79,13 +78,14 @@ public extension Container {
         let key = Container.key(service: serviceType, dependencyTypes: dependencyTypes)
         repoWithDependencies[key] = creator
     }
-    
+        
     /// Resolve with provided dependencies. Same as `resolve` but the right creator block to be used will be found by using the `dependencyTypes` array as a `key`, along with `serviceType`
     /// - Parameters:
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - dependencyTypes: this array of types, along with `serviceType`, is used as a `key` to identify and retrieve the block to be used to create the required new instance
     ///   - dependencies: the parameters to be used in the creator block. Unlike `dependencyTypes` these are not types, these are actual instances, the types of which should match with `dependencyTypes`
     func resolve<ServiceType>(serviceType: ServiceType.Type, dependencyTypes: [Any], dependencies: [Any]) -> ServiceType? {
+        // TODO: implement circular dependency detection similar to other resolve function
         let key = Container.key(service: serviceType, dependencyTypes: dependencyTypes)
         if let creator = repoWithDependencies[key] {
             return creator(dependencies) as? ServiceType
