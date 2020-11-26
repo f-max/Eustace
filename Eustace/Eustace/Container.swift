@@ -10,6 +10,8 @@ import Foundation
 
 public class Container {
     enum Errors: Error {
+        case emptyContainerUse
+        case resolvingUnregisteredService
         case circularDependency
     }
     
@@ -42,19 +44,21 @@ public class Container {
     /// Resolve: use resolve to get new instances of a given service type. The container will `resolve` the provided service type to a specific concrete implementation, according to the instructions previously provided by `register`. Returns nil if unable to find a match for the provided service type.
     /// - Parameter serviceType: the service type we want to resolve, the returned instance will assumably belong/subclass/conform to the provided service type
     public func resolve<ServiceType>(serviceType: ServiceType.Type) throws -> ServiceType? {
+        guard repo.count > 0 else {
+            throw Errors.emptyContainerUse 
+        }
+        
         let key = Container.key(service: serviceType)
-
         guard resolvedTypes.contains(key) == false else {
             throw Errors.circularDependency
         }
-        
-        if let creator = repo[key] {
-            resolvedTypes.append(key)
-            let instance = try creator() as? ServiceType
-            resolvedTypes.removeLast()
-            return instance
+        guard let creator = repo[key] else {
+            throw Errors.resolvingUnregisteredService
         }
-        return nil
+        resolvedTypes.append(key)
+        let instance = try creator() as? ServiceType
+        resolvedTypes.removeLast()
+        return instance
     }
     
     /// Dispose: opposite as register: it cleans the container removing the entry related to the provided service type. Once done that, if that service is not re-registered, calling resolve with the same service type will result in returning nil
@@ -85,7 +89,7 @@ public extension Container {
     ///   - dependencyTypes: this array of types, along with `serviceType`, is used as a `key` to identify and retrieve the block to be used to create the required new instance
     ///   - dependencies: the parameters to be used in the creator block. Unlike `dependencyTypes` these are not types, these are actual instances, the types of which should match with `dependencyTypes`
     func resolve<ServiceType>(serviceType: ServiceType.Type, dependencyTypes: [Any], dependencies: [Any]) -> ServiceType? {
-        // TODO: implement circular dependency detection similar to other resolve function
+        // TODO: implement circular dependency detection AND implement throwing errors instead of returning nil instances, similar to other resolve function 
         let key = Container.key(service: serviceType, dependencyTypes: dependencyTypes)
         if let creator = repoWithDependencies[key] {
             return creator(dependencies) as? ServiceType
