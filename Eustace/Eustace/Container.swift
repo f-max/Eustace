@@ -8,12 +8,9 @@
 
 import Foundation
 
-public typealias Creator = ()->Any?
-public typealias CreatorWithDependencies = ([Any])->Any?
-
 public class Container {
-    private var repo = [AnyHashable: Creator]()
-    private var repoWithDependencies = [AnyHashable: CreatorWithDependencies]()
+    private var repo = [AnyHashable: ()->Any?]()
+    private var repoWithDependencies = [AnyHashable: ([Any])->Any?]()
     
     public init() {}
     
@@ -32,17 +29,17 @@ public class Container {
     /// - Parameters:
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - creator: the block which is supposed to return the instance which implements the serviceType above. This block will be called when calling 'resolve'
-    public func register<ServiceType>(serviceType: ServiceType, creator: @escaping Creator) {
+    public func register<ServiceType>(serviceType: ServiceType.Type, creator: @escaping ()->ServiceType?) {
         let key = Container.key(service: serviceType)
         repo[key] = creator
     }
     
     /// Resolve: use resolve to get new instances of a given service type. The container will `resolve` the provided service type to a specific concrete implementation, according to the instructions previously provided by `register`. Returns nil if unable to find a match for the provided service type.
     /// - Parameter serviceType: the service type we want to resolve, the returned instance will assumably belong/subclass/conform to the provided service type
-    public func resolve<ServiceType>(serviceType: ServiceType) -> Any? {
+    public func resolve<ServiceType>(serviceType: ServiceType.Type) -> ServiceType? {
         let key = Container.key(service: serviceType)
         if let creator = repo[key] {
-            return creator()
+            return creator() as? ServiceType
         }
         return nil
     }
@@ -64,7 +61,7 @@ public extension Container {
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - dependencyTypes: this array of types is used as a `key`, along with `serviceType`, to identify and store the creator block
     ///   - creator: the block which is supposed to return the instance which implements the serviceType above. This block will be called when calling 'resolve'. The block should take as input parameters a sequence of instances the types of which should conform/subclass/adopt the types provided in `dependencyTypes`
-    func register<ServiceType>(serviceType: ServiceType, dependencyTypes: [Any], creator: @escaping CreatorWithDependencies) {
+    func register<ServiceType>(serviceType: ServiceType.Type, dependencyTypes: [Any], creator: @escaping ([Any])->ServiceType?) {
         let key = Container.key(service: serviceType, dependencyTypes: dependencyTypes)
         repoWithDependencies[key] = creator
     }
@@ -74,10 +71,10 @@ public extension Container {
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - dependencyTypes: this array of types, along with `serviceType`, is used as a `key` to identify and retrieve the block to be used to create the required new instance
     ///   - dependencies: the parameters to be used in the creator block. Unlike `dependencyTypes` these are not types, these are actual instances, the types of which should match with `dependencyTypes`
-    func resolve<ServiceType>(serviceType: ServiceType, dependencyTypes: [Any], dependencies: [Any]) -> Any? {
+    func resolve<ServiceType>(serviceType: ServiceType.Type, dependencyTypes: [Any], dependencies: [Any]) -> ServiceType? {
         let key = Container.key(service: serviceType, dependencyTypes: dependencyTypes)
         if let creator = repoWithDependencies[key] {
-            return creator(dependencies)
+            return creator(dependencies) as? ServiceType
         }
         return nil
     }
@@ -98,7 +95,7 @@ public extension Container {
 
     /// Resets the container to its initial state, all registered items are removed.
     func disposeAll() {
-        repo = [AnyHashable: Creator]()
-        repoWithDependencies = [AnyHashable: CreatorWithDependencies]()
+        repo = [:]
+        repoWithDependencies = [:]
     }
 }

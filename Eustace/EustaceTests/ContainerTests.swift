@@ -65,15 +65,16 @@ class ContainerTests: XCTestCase {
     
     func test_registerAType_resolveADifferentType_returnsNil() {
         sut.register(serviceType: SimpleProtocol.self) {
-            SimpleClass()
+            SimpleClass() 
         }
         let result = sut.resolve(serviceType: SomeProtocol.self)
         XCTAssertNil(result)
     }
     
     func test_registerAType_resolveSameType_returnsCorrectInstance() {
+        
         sut.register(serviceType: SimpleProtocol.self) {
-            SimpleClass()
+            return SimpleClass()
         }
         let result = sut.resolve(serviceType: SimpleProtocol.self)
         XCTAssertNotNil(result)
@@ -89,7 +90,7 @@ class ContainerTests: XCTestCase {
     
     func test_registerATypeWithDependencies_resolveADifferentTypeWithSameDependencies_returnsNil() {
         sut.register(serviceType: SomeProtocol.self, dependencyTypes: [String.self]) { _ in
-            ""
+            SomeClass()
         }
         let result = sut.resolve(serviceType: SimpleProtocol.self, dependencyTypes: [String.self], dependencies: [""])
         XCTAssertNil(result)
@@ -97,7 +98,7 @@ class ContainerTests: XCTestCase {
     
     func test_registerATypeWithDependencies_resolveSameTypeWithDifferentDependencies_returnsNil() {
         sut.register(serviceType: SomeProtocol.self, dependencyTypes: [String.self]) { _ in
-            ""
+            SomeClass()
         }
         let result = sut.resolve(serviceType: SomeProtocol.self, dependencyTypes: [Int.self], dependencies: [3])
         XCTAssertNil(result)
@@ -105,20 +106,20 @@ class ContainerTests: XCTestCase {
     
     func test_registerATypeWithDependencies_resolveSameTypeWithSameDependencies_returnsCorrectInstance() {
         sut.register(serviceType: SomeProtocol.self, dependencyTypes: [String.self]) { _ in
-            "result"
+            SomeClass()
         }
         let result = sut.resolve(serviceType: SomeProtocol.self, dependencyTypes: [String.self], dependencies: [""])
         XCTAssertNotNil(result)
-        XCTAssert(type(of: result!) == String.self)
+        XCTAssert(type(of: result!) == SomeClass.self)
     }
     
     func test_registerATypeWithDependencies_resolveSameTypeWithSameDependencies_returnsCorrectInstance_case2() {
         sut.register(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self]) { _ in
-            "result"
+            SomeClass()
         }
         let result = sut.resolve(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self], dependencies: [""])
         XCTAssertNotNil(result)
-        XCTAssert(type(of: result!) == String.self)
+        XCTAssert(type(of: result!) == SomeClass.self)
     }
     
     // MARK: -  Register-dispose-resolve cycles no dependencies
@@ -155,7 +156,7 @@ class ContainerTests: XCTestCase {
     
     func test_registerATypeWithDependencies_disposeType_resolveSameType_returnsNil() {
         sut.register(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self]) { _ in
-            "result"
+            SomeClass()
         }
         sut.dispose(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self])
         let result = sut.resolve(serviceType:  SomeProtocol.self, dependencyTypes: [SimpleProtocol.self], dependencies: [SimpleClass()])
@@ -164,18 +165,18 @@ class ContainerTests: XCTestCase {
     
     func test_registerATypeWithDependencies_disposeDifferentType_resolveSameType_returnsCorrectInstance() {
         sut.register(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self]) { _ in
-            "result"
+            SomeClass()
         }
         sut.dispose(serviceType: SimpleProtocol.self, dependencyTypes: [SimpleProtocol.self])
 
         let result = sut.resolve(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self], dependencies: [SimpleClass()])
         XCTAssertNotNil(result)
-        XCTAssert(type(of: result!) == String.self)
+        XCTAssert(type(of: result!) == SomeClass.self)
     }
 
     func test_registerATypeWithDependencies_disposeAll_resolveSameType_returnsNil() {
         sut.register(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self]) { _ in
-            "result"
+            SomeClass()
         }
         sut.disposeAll()
         let result = sut.resolve(serviceType: SomeProtocol.self, dependencyTypes: [SimpleProtocol.self], dependencies: [SimpleClass()])
@@ -187,6 +188,10 @@ class ContainerTests: XCTestCase {
 
 
 private protocol SomeProtocol {
+    
+}
+
+private class SomeClass: SomeProtocol {
     
 }
 
