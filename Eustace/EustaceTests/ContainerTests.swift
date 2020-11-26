@@ -185,7 +185,7 @@ class ContainerTests: XCTestCase {
     
     // MARK: -  Circular dependency detection
     
-    func test_resolveServiceType_withTwoWaysCircularDepenedency_throwsAppropriateError() {
+    func test_resolveServiceType_withTwoWaysCircularDepenedency_throwsAppropriateError_case_0() {
         sut.register(serviceType: ProtocolA.self) { [weak self] in
             guard let self = self else {
                 return nil
@@ -213,7 +213,35 @@ class ContainerTests: XCTestCase {
         }
     }
     
-    func test_resolveServiceType_withThreeWaysCircularDepenedency_throwsAppropriateError() {
+    func test_resolveServiceType_withTwoWaysCircularDepenedency_throwsAppropriateError_case_1() {
+        sut.register(serviceType: ProtocolA.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            var b = try self.sut.resolve(serviceType: ProtocolB.self)
+            let a = ClassA()
+            a.b = b
+            b?.a = a
+            return a
+        }
+        sut.register(serviceType: ProtocolB.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            var a = try self.sut.resolve(serviceType: ProtocolA.self)
+            let b = ClassB()
+            b.a = a
+            a?.b = b
+            return b
+        }
+        
+        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolB.self)) { error in
+            XCTAssertTrue(error is Container.Errors)
+            XCTAssertEqual(error as? Container.Errors, .circularDependency)
+        }
+    }
+    
+    func test_resolveServiceType_withThreeWaysCircularDepenedency_throwsAppropriateError_case_0() {
         sut.register(serviceType: ProtocolAA.self) { [weak self] in
             guard let self = self else {
                 return nil
@@ -258,6 +286,106 @@ class ContainerTests: XCTestCase {
         }
                     
         XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolAA.self)) { error in
+            XCTAssertTrue(error is Container.Errors)
+            XCTAssertEqual(error as? Container.Errors, .circularDependency)
+        }
+    }
+    
+    func test_resolveServiceType_withThreeWaysCircularDepenedency_throwsAppropriateError_case_1() {
+        sut.register(serviceType: ProtocolAA.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            let a = ClassAA()
+
+            var b = try self.sut.resolve(serviceType: ProtocolBB.self)
+            var c = try self.sut.resolve(serviceType: ProtocolCC.self)
+            a.b = b
+            b?.c = c
+            c?.a = a
+            
+            return a
+        }
+        sut.register(serviceType: ProtocolBB.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            let b = ClassBB()
+
+            var a = try self.sut.resolve(serviceType: ProtocolAA.self)
+            var c = try self.sut.resolve(serviceType: ProtocolCC.self)
+            a?.b = b
+            b.c = c
+            c?.a = a
+          
+            return b
+        }
+        sut.register(serviceType: ProtocolCC.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            let c = ClassCC()
+
+            var a = try self.sut.resolve(serviceType: ProtocolAA.self)
+            var b = try self.sut.resolve(serviceType: ProtocolBB.self)
+            a?.b = b
+            b?.c = c
+            c.a = a
+          
+            return c
+        }
+                    
+        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolBB.self)) { error in
+            XCTAssertTrue(error is Container.Errors)
+            XCTAssertEqual(error as? Container.Errors, .circularDependency)
+        }
+    }
+    
+    func test_resolveServiceType_withThreeWaysCircularDepenedency_throwsAppropriateError_case_2() {
+        sut.register(serviceType: ProtocolAA.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            let a = ClassAA()
+
+            var b = try self.sut.resolve(serviceType: ProtocolBB.self)
+            var c = try self.sut.resolve(serviceType: ProtocolCC.self)
+            a.b = b
+            b?.c = c
+            c?.a = a
+            
+            return a
+        }
+        sut.register(serviceType: ProtocolBB.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            let b = ClassBB()
+
+            var a = try self.sut.resolve(serviceType: ProtocolAA.self)
+            var c = try self.sut.resolve(serviceType: ProtocolCC.self)
+            a?.b = b
+            b.c = c
+            c?.a = a
+          
+            return b
+        }
+        sut.register(serviceType: ProtocolCC.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            let c = ClassCC()
+
+            var a = try self.sut.resolve(serviceType: ProtocolAA.self)
+            var b = try self.sut.resolve(serviceType: ProtocolBB.self)
+            a?.b = b
+            b?.c = c
+            c.a = a
+          
+            return c
+        }
+                    
+        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolCC.self)) { error in
             XCTAssertTrue(error is Container.Errors)
             XCTAssertEqual(error as? Container.Errors, .circularDependency)
         }
