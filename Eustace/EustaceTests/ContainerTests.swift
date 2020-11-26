@@ -59,7 +59,7 @@ class ContainerTests: XCTestCase {
     // MARK: -  Register-resolve cycles no dependencies
     
     func test_doNotRegisterAnything_resolveAType_returnsNil() {
-        let result = sut.resolve(serviceType: SomeOtherProtocol.self)
+        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self)
         XCTAssertNil(result)
     }
     
@@ -67,7 +67,7 @@ class ContainerTests: XCTestCase {
         sut.register(serviceType: SomeOtherProtocol.self) {
             SomeOtherClass() 
         }
-        let result = sut.resolve(serviceType: SomeProtocol.self)
+        let result = try! sut.resolve(serviceType: SomeProtocol.self)
         XCTAssertNil(result)
     }
     
@@ -76,7 +76,7 @@ class ContainerTests: XCTestCase {
         sut.register(serviceType: SomeProtocol.self) {
             return SomeClass()
         }
-        let result = sut.resolve(serviceType: SomeProtocol.self)
+        let result = try! sut.resolve(serviceType: SomeProtocol.self)
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
@@ -129,7 +129,7 @@ class ContainerTests: XCTestCase {
             SomeOtherClass()
         }
         sut.dispose(serviceType: SomeOtherProtocol.self)
-        let result = sut.resolve(serviceType: SomeOtherProtocol.self)
+        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self)
         XCTAssertNil(result)
     }
     
@@ -138,7 +138,7 @@ class ContainerTests: XCTestCase {
             SomeOtherClass()
         }
         sut.dispose(serviceType: SomeProtocol.self)
-        let result = sut.resolve(serviceType: SomeOtherProtocol.self)
+        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self)
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeOtherClass.self)
     }
@@ -148,7 +148,7 @@ class ContainerTests: XCTestCase {
             SomeOtherClass()
         }
         sut.disposeAll()
-        let result = sut.resolve(serviceType: SomeOtherProtocol.self)
+        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self)
         XCTAssertNil(result)
     }
     
@@ -182,10 +182,39 @@ class ContainerTests: XCTestCase {
         let result = sut.resolve(serviceType: SomeProtocol.self, dependencyTypes: [SomeOtherProtocol.self], dependencies: [SomeOtherClass()])
         XCTAssertNil(result)
     }
+    
+    // MARK: -  Circular dependency detection
+    
+    func test_resolveServiceType_withTwoWaysCircularDepenedency_throwsAppropriateError() {
+        sut.register(serviceType: ProtocolA.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            var b = try self.sut.resolve(serviceType: ProtocolB.self)
+            let a = ClassA()
+            a.b = b
+            b?.a = a
+            return a
+        }
+        sut.register(serviceType: ProtocolB.self) { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            var a = try self.sut.resolve(serviceType: ProtocolA.self)
+            let b = ClassB()
+            b.a = a
+            a?.b = b
+            return b
+        }
+        
+        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolA.self)) { error in
+            XCTAssertTrue(error is Container.Errors)
+            XCTAssertEqual(error as? Container.Errors, .circularDependency)
+        }
+    }
 }
 
 // MARK: -  Helpers
-
 
 private protocol SomeProtocol {
     func doStuff()
@@ -206,5 +235,24 @@ private class SomeOtherClass: SomeOtherProtocol {
         print("doSomeOtherStuff")
     }
 }
+
+// MARK: - Helpers for two ways circular dependency
+
+private protocol ProtocolA {
+    var b: ProtocolB?  { get set }
+}
+
+private protocol ProtocolB {
+    var a: ProtocolA?  { get set }
+}
+
+private class ClassA: ProtocolA {
+    var b: ProtocolB?
+}
+
+private class ClassB: ProtocolB {
+    var a: ProtocolA?
+}
+
 
 
