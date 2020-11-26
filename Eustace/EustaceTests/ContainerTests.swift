@@ -58,21 +58,24 @@ class ContainerTests: XCTestCase {
     
     // MARK: -  Register-resolve cycles no dependencies
     
-    func test_doNotRegisterAnything_resolveAType_returnsNil() {
-        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self)
-        XCTAssertNil(result)
+    func test_doNotRegisterAnything_resolveAType_throwsExpectedError() {
+        XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self)) { error in
+                   XCTAssertTrue(error is Container.Errors)
+                   XCTAssertEqual(error as? Container.Errors, .emptyContainerUse)
+        }
     }
     
-    func test_registerAType_resolveADifferentType_returnsNil() {
-        sut.register(serviceType: SomeOtherProtocol.self) {
-            SomeOtherClass() 
+    func test_registerAType_resolveADifferentType_throwsExpectedError() {
+        sut.register(serviceType: SomeProtocol.self) {
+            SomeClass()
         }
-        let result = try! sut.resolve(serviceType: SomeProtocol.self)
-        XCTAssertNil(result)
+        XCTAssertThrowsError(try sut.resolve(serviceType: SomeOtherProtocol.self)) { error in
+                   XCTAssertTrue(error is Container.Errors)
+                   XCTAssertEqual(error as? Container.Errors, .resolvingUnregisteredService)
+        }
     }
     
     func test_registerAType_resolveSameType_returnsCorrectInstance() {
-        
         sut.register(serviceType: SomeProtocol.self) {
             return SomeClass()
         }
@@ -124,13 +127,16 @@ class ContainerTests: XCTestCase {
     
     // MARK: -  Register-dispose-resolve cycles no dependencies
     
-    func test_registerAType_disposeType_resolveSameType_returnsNil() {
+    func test_registerAType_disposeType_resolveSameType_throwsExpectedError() {
         sut.register(serviceType: SomeOtherProtocol.self) {
             SomeOtherClass()
         }
         sut.dispose(serviceType: SomeOtherProtocol.self)
-        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self)
-        XCTAssertNil(result)
+        
+        XCTAssertThrowsError(try sut.resolve(serviceType: SomeOtherProtocol.self)) { error in
+                   XCTAssertTrue(error is Container.Errors)
+                   XCTAssertEqual(error as? Container.Errors, .emptyContainerUse)
+        }        
     }
     
     func test_registerAType_disposeDifferentType_resolveSameType_returnsCorrectInstance() {
@@ -143,13 +149,16 @@ class ContainerTests: XCTestCase {
         XCTAssert(type(of: result!) == SomeOtherClass.self)
     }
     
-    func test_registerAType_disposeAll_resolveSameType_returnsNil() {
+    func test_registerAType_disposeAll_resolveSameType_throwsExpectedError() {
         sut.register(serviceType: SomeOtherProtocol.self) {
             SomeOtherClass()
         }
         sut.disposeAll()
-        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self)
-        XCTAssertNil(result)
+        
+        XCTAssertThrowsError(try sut.resolve(serviceType: SomeOtherProtocol.self)) { error in
+                   XCTAssertTrue(error is Container.Errors)
+                   XCTAssertEqual(error as? Container.Errors, .emptyContainerUse)
+        }
     }
     
     // MARK: -  Register-dispose-resolve cycles with dependencies
