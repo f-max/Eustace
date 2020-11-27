@@ -34,15 +34,15 @@ print("Registered car: \(registeredCar!.chassis.serialNumber!)")
 print("\n\n- Example 2\n")
 
 container.disposeAll()
-container.register(serviceType: ChassisProtocol.self, dependencyTypes: [String.self]) { dependencies in
-    guard dependencies.count == 1, let serialNumber = dependencies.first as? String else {
+container.register(serviceType: ChassisProtocol.self, dependencyType: String.self) { dependencies in
+    guard let serialNumber = dependencies as? String else {
         return nil
     }
     return Chassis(serialNumber: serialNumber, mountedInCar: nil)
  }
 
-let chassis_1 = container.resolve(serviceType: ChassisProtocol.self, dependencyTypes: [String.self], dependencies: ["abc_1"])
-let chassis_2 = container.resolve(serviceType: ChassisProtocol.self, dependencyTypes: [String.self], dependencies: ["xyz_2"])
+let chassis_1 = container.resolve(serviceType: ChassisProtocol.self, dependencyType: String.self, dependency: "abc_1")
+let chassis_2 = container.resolve(serviceType: ChassisProtocol.self, dependencyType: String.self, dependency: "xyz_2")
 print("Chassis #1: \(chassis_1!.serialNumber!)")
 print("Chassis #2: \(chassis_2!.serialNumber!)")
 
