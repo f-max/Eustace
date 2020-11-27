@@ -14,16 +14,16 @@ let container = Container()
 // MARK: - Example 1
 print("- Example 1\n")
 container.setup(power: .standard, optionals: .standard)
-let cheapCar = container.resolve(serviceType: CarProtocol.self) as? CarProtocol
+let cheapCar = try? container.resolve(serviceType: CarProtocol.self)
 
 container.setup(power: .sports, optionals: .luxury)
-let funkyCar = container.resolve(serviceType: CarProtocol.self) as? CarProtocol
+let funkyCar = try? container.resolve(serviceType: CarProtocol.self)
 
 container.setup(power: .supersports, optionals: .luxury)
-let superFunkyCar = container.resolve(serviceType: CarProtocol.self) as? CarProtocol
+let superFunkyCar = try container.resolve(serviceType: CarProtocol.self)
 
 container.setup(power: .standard, optionals: .medium, chassisSerialNumber: "xyz")
-let registeredCar = container.resolve(serviceType: CarProtocol.self) as? CarProtocol
+let registeredCar = try container.resolve(serviceType: CarProtocol.self)
 
 print("Cheap car: \(cheapCar!.engine.powerHP) hp, \(cheapCar!.interiors.seats.description())")
 print("Funky car: \(funkyCar!.engine.powerHP) hp, \(funkyCar!.interiors.seats.description())")
@@ -41,8 +41,8 @@ container.register(serviceType: ChassisProtocol.self, dependencyTypes: [String.s
     return Chassis(serialNumber: serialNumber, mountedInCar: nil)
  }
 
-let chassis_1 = container.resolve(serviceType: ChassisProtocol.self, dependencyTypes: [String.self], dependencies: ["abc_1"]) as? ChassisProtocol
-let chassis_2 = container.resolve(serviceType: ChassisProtocol.self, dependencyTypes: [String.self], dependencies: ["xyz_2"]) as? ChassisProtocol
+let chassis_1 = container.resolve(serviceType: ChassisProtocol.self, dependencyTypes: [String.self], dependencies: ["abc_1"])
+let chassis_2 = container.resolve(serviceType: ChassisProtocol.self, dependencyTypes: [String.self], dependencies: ["xyz_2"])
 print("Chassis #1: \(chassis_1!.serialNumber!)")
 print("Chassis #2: \(chassis_2!.serialNumber!)")
 

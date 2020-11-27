@@ -72,7 +72,7 @@ extension Container {
         
     
         register(serviceType: InteriorsProtocol.self) {
-            guard let seats = self.resolve(serviceType: SeatsProtocol.self) as? SeatsProtocol, let steeringWheel = self.resolve(serviceType: SteeringWheelProtocol.self) as? SteeringWheelProtocol  else {
+            guard let seats = try self.resolve(serviceType: SeatsProtocol.self), let steeringWheel = try self.resolve(serviceType: SteeringWheelProtocol.self) else {
                 return nil
             }
             return Interiors(seats: seats, steeringWheel: steeringWheel)
@@ -80,11 +80,11 @@ extension Container {
        
         register(serviceType: CarProtocol.self) {
             
-            guard let chassis = self.resolve(serviceType: ChassisProtocol.self) as? ChassisProtocol,
-                let wheels = self.resolve(serviceType: WheelsProtocol.self) as? WheelsProtocol,
-                let engine = self.resolve(serviceType: EngineProtocol.self) as? EngineProtocol,
-                let gearBox = self.resolve(serviceType: GearBoxProtocol.self) as? GearBoxProtocol,
-                let interiors = self.resolve(serviceType: InteriorsProtocol.self) as? InteriorsProtocol else {
+            guard let chassis = try self.resolve(serviceType: ChassisProtocol.self),
+                let wheels = try self.resolve(serviceType: WheelsProtocol.self),
+                let engine = try self.resolve(serviceType: EngineProtocol.self),
+                let gearBox = try self.resolve(serviceType: GearBoxProtocol.self),
+                let interiors = try self.resolve(serviceType: InteriorsProtocol.self) else {
                     return nil
             }
             
