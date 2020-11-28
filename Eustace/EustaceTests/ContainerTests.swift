@@ -66,6 +66,14 @@ class ContainerTests: XCTestCase {
     
     // MARK: -  Register-resolve cycles with dependencies
         
+    func test_registerATypeWithDependencies_creatorBlockInfersRightDependencyType() {
+        sut.register(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self) { dependency in
+            // the mere fact the code builds proves the assertion stated in the function name
+            dependency.doSomeOtherProtocolStuff()
+            return SomeClass()
+        }
+    }
+    
     func test_registerATypeWithDependencies_resolveADifferentTypeWithSameDependencies_returnsNil() {
         sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
@@ -92,10 +100,10 @@ class ContainerTests: XCTestCase {
     }
     
     func test_registerATypeWithDependencies_resolveSameTypeWithSameDependencies_returnsCorrectInstance_case2() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self) { _ in
+        sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
         }
-        let result = sut.resolve(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self, dependency: "")
+        let result = sut.resolve(serviceType: SomeProtocol.self, dependencyType: String.self, dependency: "")
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
@@ -390,11 +398,15 @@ private class SomeClass: SomeProtocol {
 
 private protocol SomeOtherProtocol {
     func doStuff()
+    func doSomeOtherProtocolStuff()
 }
 
 private class SomeOtherClass: SomeOtherProtocol {
     func doStuff() {
         print("doSomeOtherStuff")
+    }
+    func doSomeOtherProtocolStuff() {
+        print("doSomeOtherProtocolStuff")
     }
 }
 
