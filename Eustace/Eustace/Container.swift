@@ -21,11 +21,12 @@ public class Container {
     
     public init() {}
     
-    static func key<ServiceType>(service: ServiceType, dependencyType: Any? = nil) -> String {
-        guard let dependencyType = dependencyType else {
-            return String(describing: ServiceType.self)
-        }
-        return String(describing: ServiceType.self) + "|" + String(describing:dependencyType.self)
+    static func key<ServiceType>(service: ServiceType) -> String {
+        return String(describing: ServiceType.self)
+    }
+    
+    static func key<ServiceType, DependencyType>(service: ServiceType, dependencyType: DependencyType) -> String {
+        return String(describing: ServiceType.self) + "|" + String(describing: DependencyType.self)
     }
     
     // MARK: - register/resolve/dispose - with no dependencies
@@ -87,14 +88,13 @@ public extension Container {
         repoWithDependencies[key] = castedCreator
     }
         
-    /// Resolve with provided dependency. Same as `resolve` but the right creator block to be used will be found by using the `dependencyType` as a `key`, along with `serviceType`
+    /// Resolve with provided dependency. Same as `resolve` but the right creator block to be used will be found by using the `dependency` type as a `key`, along with `serviceType`
     /// - Parameters:
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
-    ///   - dependencyType: this type, along with `serviceType`, is used as a `key` to identify and retrieve the block to be used to create the required new instance
-    ///   - dependency: the parameter to be used in the creator block. Unlike `dependencyType` this is not a type, this is an actual instance, the type of which should match with `dependencyType`
-    func resolve<Service>(serviceType: Service.Type, dependencyType: Any, dependency: Any) -> Service? {
-        // TODO: implement circular dependency detection AND implement throwing errors instead of returning nil instances, similar to other resolve function 
-        let key = Container.key(service: serviceType, dependencyType: dependencyType)
+    ///   - dependency: the parameter to be used in the creator block. Its type is also used as a key along with `serviceType`
+    func resolve<Service, Dependency>(serviceType: Service.Type, dependency: Dependency) -> Service? {
+        // TODO: implement circular dependency detection AND implement throwing errors instead of returning nil instances, similar to other resolve function
+        let key = Container.key(service: serviceType, dependencyType: Dependency.self)
         if let creator = repoWithDependencies[key] {
             return creator(dependency) as? Service
         }
@@ -105,7 +105,7 @@ public extension Container {
     /// - Parameters:
     ///   - serviceType: the service type associated to the entry we want to remove from the container, it is used as a `key`, along with `dependencyTypes` to find the entry to remove
     ///   - dependencyType: it is used as a `key`, along with `serviceType` to find the entry to remove
-    func dispose<Service>(serviceType: Service, dependencyType: Any) {
+    func dispose<Service, Dependency>(serviceType: Service, dependencyType: Dependency) {
         let key = Container.key(service: serviceType, dependencyType: dependencyType)
         repoWithDependencies[key] = nil
     }

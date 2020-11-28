@@ -26,14 +26,12 @@ class ContainerTests: XCTestCase {
         XCTAssertEqual(Container.key(service: SomeProtocol.self), "SomeProtocol.Protocol")
     }
     
-    func test_keyWithDependencies_typeIsClass_depenciesIsNil_producesExpextedString() {
-        let value = Container.key(service: String.self, dependencyType: nil)
-        XCTAssertEqual(value, "String.Type")
+    func test_key_typeIsClass_dependencyIsClass_producesExpextedString() {
+        XCTAssertEqual(Container.key(service: String.self, dependencyType: String.self), "String.Type|String.Type")
     }
     
-    func test_keyWithDependencies_typeIsProtocol_depenciesIsNil_producesExpextedString() {
-        let value = Container.key(service: SomeProtocol.self, dependencyType: nil)
-        XCTAssertEqual(value, "SomeProtocol.Protocol")
+    func test_key_typeIsProtocol_dependencyIsProtocol_producesExpextedString() {
+        XCTAssertEqual(Container.key(service: ProtocolA.self, dependencyType: ProtocolA.self), "ProtocolA.Protocol|ProtocolA.Protocol")
     }
     
     // MARK: -  Register-resolve cycles no dependencies
