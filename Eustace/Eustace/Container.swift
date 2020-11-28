@@ -16,7 +16,7 @@ public class Container {
     }
     
     private var repo = [AnyHashable: ()throws->Any?]()
-    private var repoWithDependencies = [AnyHashable: (Any)->Any?]()
+    private var repoWithDependencies = [AnyHashable: (Any)throws->Any?]()
     private var resolvedTypes  = [String]()
     
     public init() {}
@@ -92,11 +92,14 @@ public extension Container {
     /// - Parameters:
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - dependency: the parameter to be used in the creator block. Its type is also used as a key along with `serviceType`
-    func resolve<Service, Dependency>(serviceType: Service.Type, dependency: Dependency) -> Service? {
-        // TODO: implement circular dependency detection AND implement throwing errors instead of returning nil instances, similar to other resolve function
+    func resolve<Service, Dependency>(serviceType: Service.Type, dependency: Dependency) throws -> Service? {
+        guard repoWithDependencies.count > 0 else {
+            throw Errors.emptyContainerUse
+        }
+        
         let key = Container.key(service: serviceType, dependencyType: Dependency.self)
         if let creator = repoWithDependencies[key] {
-            return creator(dependency) as? Service
+            return try creator(dependency) as? Service
         }
         return nil
     }
