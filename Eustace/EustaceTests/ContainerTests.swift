@@ -78,7 +78,7 @@ class ContainerTests: XCTestCase {
         sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
         }
-        let result = sut.resolve(serviceType: SomeOtherProtocol.self, dependencyType: String.self, dependency: "")
+        let result = sut.resolve(serviceType: SomeOtherProtocol.self, dependency: "")
         XCTAssertNil(result)
     }
     
@@ -86,7 +86,7 @@ class ContainerTests: XCTestCase {
         sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
         }
-        let result = sut.resolve(serviceType: SomeProtocol.self, dependencyType: Int.self, dependency: 3)
+        let result = sut.resolve(serviceType: SomeProtocol.self, dependency: 3 as Int)
         XCTAssertNil(result)
     }
     
@@ -94,7 +94,7 @@ class ContainerTests: XCTestCase {
         sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
         }
-        let result = sut.resolve(serviceType: SomeProtocol.self, dependencyType: String.self, dependency: "")
+        let result = sut.resolve(serviceType: SomeProtocol.self, dependency: "")
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
@@ -103,7 +103,7 @@ class ContainerTests: XCTestCase {
         sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
         }
-        let result = sut.resolve(serviceType: SomeProtocol.self, dependencyType: String.self, dependency: "")
+        let result = sut.resolve(serviceType: SomeProtocol.self, dependency: "")
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
@@ -151,7 +151,7 @@ class ContainerTests: XCTestCase {
             SomeClass()
         }
         sut.dispose(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self)
-        let result = sut.resolve(serviceType:  SomeProtocol.self, dependencyType: SomeOtherProtocol.self, dependency: SomeOtherClass())
+        let result = sut.resolve(serviceType:  SomeProtocol.self, dependency: SomeOtherClass())
         XCTAssertNil(result)
     }
     
@@ -159,9 +159,10 @@ class ContainerTests: XCTestCase {
         sut.register(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self) { _ in
             SomeClass()
         }
-        sut.dispose(serviceType: SomeOtherProtocol.self, dependencyType: SomeOtherProtocol.self)
-
-        let result = sut.resolve(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self, dependency: SomeOtherClass())
+        sut.dispose(serviceType: SomeOtherProtocol.self, dependencyType: SomeProtocol.self)
+        
+        let dependency: SomeOtherProtocol = SomeOtherClass()
+        let result = sut.resolve(serviceType: SomeProtocol.self, dependency: dependency)
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
@@ -171,7 +172,7 @@ class ContainerTests: XCTestCase {
             SomeClass()
         }
         sut.disposeAll()
-        let result = sut.resolve(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self, dependency: SomeOtherClass())
+        let result = sut.resolve(serviceType: SomeProtocol.self, dependency: SomeOtherClass() as SomeOtherProtocol)
         XCTAssertNil(result)
     }
     
