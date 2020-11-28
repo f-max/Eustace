@@ -76,20 +76,22 @@ class ContainerTests: XCTestCase {
         }
     }
     
-    func test_registerATypeWithDependencies_resolveADifferentTypeWithSameDependencies_returnsNil() {
+    func test_registerATypeWithDependencies_resolveADifferentTypeWithSameDependencies_throwsExpectedError() {
         sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
         }
-        let result = try! sut.resolve(serviceType: SomeOtherProtocol.self, dependency: "")
-        XCTAssertNil(result)
+        XCTAssertThrowsError(try sut.resolve(serviceType: SomeOtherProtocol.self, dependency: "")) { error in
+            XCTAssertEqual(error as? Container.Errors, .resolvingUnregisteredService)
+        }
     }
     
-    func test_registerATypeWithDependencies_resolveSameTypeWithDifferentDependencies_returnsNil() {
+    func test_registerATypeWithDependencies_resolveSameTypeWithDifferentDependencies_throwsExpectedError() {
         sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
             SomeClass()
         }
-        let result = try! sut.resolve(serviceType: SomeProtocol.self, dependency: 3 as Int)
-        XCTAssertNil(result)
+        XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self, dependency: 3 as Int)) { error in
+            XCTAssertEqual(error as? Container.Errors, .resolvingUnregisteredService)
+        }
     }
     
     func test_registerATypeWithDependencies_resolveSameTypeWithSameDependencies_returnsCorrectInstance() {
@@ -178,7 +180,72 @@ class ContainerTests: XCTestCase {
         }
     }
     
-    // MARK: -  Circular dependency detection
+    // MARK: -  Circular dependency detection with dependencies
+
+    func test_resolveServiceTypeWithDependency_withTwoWaysCircularDepenedency_throwsAppropriateError_case_0() {
+        
+        sut.register(serviceType: ProtocolA.self, dependencyType: String.self) { [weak self] (string)->ProtocolA? in
+            guard let self = self else {
+                return nil
+            }
+            
+            var b = try self.sut.resolve(serviceType: ProtocolB.self, dependency: "some string")
+            let a = ClassA()
+            a.b = b
+            b?.a = a
+            return a
+        }
+        
+        sut.register(serviceType: ProtocolB.self, dependencyType: String.self) { [weak self] (string)->ProtocolB? in
+            guard let self = self else {
+                return nil
+            }
+            
+            var a = try self.sut.resolve(serviceType: ProtocolA.self, dependency: "some string")
+            let b = ClassB()
+            b.a = a
+            a?.b = b
+            return b
+        }
+        
+        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolA.self, dependency: "some string")) { error in
+            XCTAssertEqual(error as? Container.Errors, .circularDependency)
+        }
+    }
+    
+    func test_resolveServiceTypeWithDependency_withTwoWaysCircularDepenedency_throwsAppropriateError_case_1() {
+        
+        sut.register(serviceType: ProtocolA.self, dependencyType: String.self) { [weak self] (string)->ProtocolA? in
+            guard let self = self else {
+                return nil
+            }
+            
+            var b = try self.sut.resolve(serviceType: ProtocolB.self, dependency: "some string")
+            let a = ClassA()
+            a.b = b
+            b?.a = a
+            return a
+        }
+        
+       
+        sut.register(serviceType: ProtocolB.self, dependencyType: String.self) { [weak self] (string)->ProtocolB? in
+            guard let self = self else {
+                return nil
+            }
+            
+            var a = try self.sut.resolve(serviceType: ProtocolA.self, dependency: "some string")
+            let b = ClassB()
+            b.a = a
+            a?.b = b
+            return b
+        }
+        
+        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolB.self, dependency: "some string")) { error in
+            XCTAssertEqual(error as? Container.Errors, .circularDependency)
+        }
+    }
+    
+    // MARK: -  Circular dependency detection no dependencies
     
     func test_resolveServiceType_withTwoWaysCircularDepenedency_throwsAppropriateError_case_0() {
         sut.register(serviceType: ProtocolA.self) { [weak self] in

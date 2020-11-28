@@ -38,8 +38,8 @@ container.register(serviceType: ChassisProtocol.self, dependencyType: String.sel
     return Chassis(serialNumber: serialNumber, mountedInCar: nil)
  }
 
-let chassis_1 = container.resolve(serviceType: ChassisProtocol.self, dependency: "abc_1")
-let chassis_2 = container.resolve(serviceType: ChassisProtocol.self, dependency: "xyz_2")
+let chassis_1 = try! container.resolve(serviceType: ChassisProtocol.self, dependency: "abc_1")
+let chassis_2 = try! container.resolve(serviceType: ChassisProtocol.self, dependency: "xyz_2")
 print("Chassis #1: \(chassis_1!.serialNumber!)")
 print("Chassis #2: \(chassis_2!.serialNumber!)")
 
