@@ -76,9 +76,15 @@ public extension Container {
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - dependencyType: this type is used as a `key`, along with `serviceType`, to identify and store the creator block
     ///   - creator: the block which is supposed to return the instance which implements the serviceType above. This block will be called when calling 'resolve'. The block should take as input parameters a sequence of instances the types of which should conform/subclass/adopt the types provided in `dependencyTypes`
-    func register<Service>(serviceType: Service.Type, dependencyType: Any, creator: @escaping (Any)->Service?) {
+    func register<Service, Dependency>(serviceType: Service.Type, dependencyType: Dependency.Type, creator: @escaping (Dependency)->Service?) {
         let key = Container.key(service: serviceType, dependencyType: dependencyType)
-        repoWithDependencies[key] = creator
+        let castedCreator: (Any)->Any? = { dependency in
+            guard let dependency = dependency as? Dependency else {
+                return nil
+            }
+            return creator(dependency)
+        }
+        repoWithDependencies[key] = castedCreator
     }
         
     /// Resolve with provided dependency. Same as `resolve` but the right creator block to be used will be found by using the `dependencyType` as a `key`, along with `serviceType`
