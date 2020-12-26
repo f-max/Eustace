@@ -207,7 +207,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1130;
-				ORGANIZATIONNAME = "Massimiliano Faustini";
+				ORGANIZATIONNAME = "f-max";
 				TargetAttributes = {
 					50335E75256015DE00DE3AB9 = {
 						CreatedOnToolsVersion = 11.3.1;
