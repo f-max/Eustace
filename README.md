@@ -68,3 +68,10 @@ If two classes hold mutual non-optional references, they are not instantiable an
 Still, in some cases some help can be provided.
 
 This IoC container is able to detect circular dependencies within its resolve function, verifying that a given service type has not been resolved before.
+
+### How to use it in your project
+
+#### Using Carthage
+
+github "f-max/Eustace" 
+
