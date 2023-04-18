@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol CarProtocol: class {
+protocol CarProtocol: AnyObject {
     var chassis: ChassisProtocol { get }
     var engine: EngineProtocol { get set }
     var gearBox: GearBoxProtocol { get set }
@@ -16,33 +16,33 @@ protocol CarProtocol: class {
     var interiors: InteriorsProtocol { get set }
 }
 
-protocol ChassisProtocol: class {
+protocol ChassisProtocol: AnyObject {
     var serialNumber: String? { get set }
     var car: CarProtocol? { get set } // two-ways circular depenedncy
 }
 
-protocol WheelsProtocol: class {
+protocol WheelsProtocol: AnyObject {
     
 }
 
-protocol EngineProtocol: class {
+protocol EngineProtocol: AnyObject {
     var powerHP: Double { get }
 }
 
-protocol GearBoxProtocol: class {
+protocol GearBoxProtocol: AnyObject {
     
 }
 
-protocol InteriorsProtocol: class {
+protocol InteriorsProtocol: AnyObject {
     var seats: SeatsProtocol { get set }
     var steeringWheel: SteeringWheelProtocol { get set }
 }
 
-protocol SeatsProtocol: class {
+protocol SeatsProtocol: AnyObject {
     func description() -> String
 }
 
-protocol SteeringWheelProtocol: class {
+protocol SteeringWheelProtocol: AnyObject {
     
 }
 
