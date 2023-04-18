@@ -19,19 +19,19 @@ class ContainerTests: XCTestCase {
     // MARK: - Key function tests
     
     func test_key_typeIsClass_producesExpextedString() {
-        XCTAssertEqual(Container.key(service: String.self), "String.Type")
+        XCTAssertEqual(Container.key(serviceType: String.self), "String.Type")
     }
     
     func test_key_typeIsProtocol_producesExpextedString() {
-        XCTAssertEqual(Container.key(service: SomeProtocol.self), "SomeProtocol.Protocol")
+        XCTAssertEqual(Container.key(serviceType: SomeProtocol.self), "SomeProtocol.Protocol")
     }
     
     func test_key_typeIsClass_dependencyIsClass_producesExpextedString() {
-        XCTAssertEqual(Container.key(service: String.self, dependencyType: String.self), "String.Type|String.Type")
+      XCTAssertEqual(Container.key(service: String.self, creatorParameterType: String.self), "String.Type|String.Type")
     }
     
     func test_key_typeIsProtocol_dependencyIsProtocol_producesExpextedString() {
-        XCTAssertEqual(Container.key(service: ProtocolA.self, dependencyType: ProtocolA.self), "ProtocolA.Protocol|ProtocolA.Protocol")
+      XCTAssertEqual(Container.key(service: ProtocolA.self, creatorParameterType: ProtocolA.self), "ProtocolA.Protocol|ProtocolA.Protocol")
     }
     
     // MARK: -  Register-resolve cycles no dependencies
@@ -63,13 +63,13 @@ class ContainerTests: XCTestCase {
     // MARK: -  Register-resolve cycles with dependencies
     
     func test_doNotRegisterAnything_resolveATypeWithDependency_throwsExpectedError() {
-        XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self, dependency: "")) { error in
+      XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self, parameter: "")) { error in
             XCTAssertEqual(error as? Container.Errors, .emptyContainerUse)
         }
     }
     
     func test_registerATypeWithDependencies_creatorBlockInfersRightDependencyType() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self) { dependency in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: SomeOtherProtocol.self) { dependency in
             // the mere fact the code builds proves the assertion stated in the function name
             dependency.doSomeOtherProtocolStuff()
             return SomeClass()
@@ -77,37 +77,37 @@ class ContainerTests: XCTestCase {
     }
     
     func test_registerATypeWithDependencies_resolveADifferentTypeWithSameDependencies_throwsExpectedError() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: String.self) { _ in
             SomeClass()
         }
-        XCTAssertThrowsError(try sut.resolve(serviceType: SomeOtherProtocol.self, dependency: "")) { error in
+      XCTAssertThrowsError(try sut.resolve(serviceType: SomeOtherProtocol.self, parameter: "")) { error in
             XCTAssertEqual(error as? Container.Errors, .resolvingUnregisteredService)
         }
     }
     
     func test_registerATypeWithDependencies_resolveSameTypeWithDifferentDependencies_throwsExpectedError() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: String.self) { _ in
             SomeClass()
         }
-        XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self, dependency: 3 as Int)) { error in
+      XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self, parameter: 3 as Int)) { error in
             XCTAssertEqual(error as? Container.Errors, .resolvingUnregisteredService)
         }
     }
     
     func test_registerATypeWithDependencies_resolveSameTypeWithSameDependencies_returnsCorrectInstance() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: String.self) { _ in
             SomeClass()
         }
-        let result = try! sut.resolve(serviceType: SomeProtocol.self, dependency: "")
+      let result = try! sut.resolve(serviceType: SomeProtocol.self, parameter: "")
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
     
     func test_registerATypeWithDependencies_resolveSameTypeWithSameDependencies_returnsCorrectInstance_case2() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: String.self) { _ in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: String.self) { _ in
             SomeClass()
         }
-        let result = try! sut.resolve(serviceType: SomeProtocol.self, dependency: "")
+      let result = try! sut.resolve(serviceType: SomeProtocol.self, parameter: "")
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
@@ -149,33 +149,33 @@ class ContainerTests: XCTestCase {
     // MARK: -  Register-dispose-resolve cycles with dependencies
     
     func test_registerATypeWithDependencies_disposeType_resolveSameType_throwsExpectedError() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self) { _ in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: SomeOtherProtocol.self) { _ in
             SomeClass()
         }
         sut.dispose(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self)
         
-        XCTAssertThrowsError(try sut.resolve(serviceType:  SomeProtocol.self, dependency: SomeOtherClass() as SomeOtherProtocol)) { error in
+      XCTAssertThrowsError(try sut.resolve(serviceType:  SomeProtocol.self, parameter: SomeOtherClass() as SomeOtherProtocol)) { error in
             XCTAssertEqual(error as? Container.Errors, .emptyContainerUse)
         }
     }
     
     func test_registerATypeWithDependencies_disposeDifferentType_resolveSameType_returnsCorrectInstance() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self) { _ in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: SomeOtherProtocol.self) { _ in
             SomeClass()
         }
         sut.dispose(serviceType: SomeOtherProtocol.self, dependencyType: SomeProtocol.self)
         
-        let result = try! sut.resolve(serviceType: SomeProtocol.self, dependency: SomeOtherClass() as SomeOtherProtocol)
+      let result = try! sut.resolve(serviceType: SomeProtocol.self, parameter: SomeOtherClass() as SomeOtherProtocol)
         XCTAssertNotNil(result)
         XCTAssert(type(of: result!) == SomeClass.self)
     }
     
     func test_registerATypeWithDependencies_disposeAll_resolveSameType_throwsExpectedError() {
-        sut.register(serviceType: SomeProtocol.self, dependencyType: SomeOtherProtocol.self) { _ in
+      sut.register(serviceType: SomeProtocol.self, creatorParameterType: SomeOtherProtocol.self) { _ in
             SomeClass()
         }
         sut.disposeAll()
-        XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self, dependency: SomeOtherClass() as SomeOtherProtocol)) { error in
+      XCTAssertThrowsError(try sut.resolve(serviceType: SomeProtocol.self, parameter: SomeOtherClass() as SomeOtherProtocol)) { error in
             XCTAssertEqual(error as? Container.Errors, .emptyContainerUse)
         }
     }
@@ -184,43 +184,43 @@ class ContainerTests: XCTestCase {
 
     func test_resolveServiceTypeWithDependency_withTwoWaysCircularDepenedency_throwsAppropriateError_case_0() {
         
-        sut.register(serviceType: ProtocolA.self, dependencyType: String.self) { [weak self] (string)->ProtocolA? in
+      sut.register(serviceType: ProtocolA.self, creatorParameterType: String.self) { [weak self] (string)->ProtocolA? in
             guard let self = self else {
                 return nil
             }
             
-            var b = try self.sut.resolve(serviceType: ProtocolB.self, dependency: "some string")
+        var b = try self.sut.resolve(serviceType: ProtocolB.self, parameter: "some string")
             let a = ClassA()
             a.b = b
             b?.a = a
             return a
         }
         
-        sut.register(serviceType: ProtocolB.self, dependencyType: String.self) { [weak self] (string)->ProtocolB? in
+      sut.register(serviceType: ProtocolB.self, creatorParameterType: String.self) { [weak self] (string)->ProtocolB? in
             guard let self = self else {
                 return nil
             }
             
-            var a = try self.sut.resolve(serviceType: ProtocolA.self, dependency: "some string")
+        var a = try self.sut.resolve(serviceType: ProtocolA.self, parameter: "some string")
             let b = ClassB()
             b.a = a
             a?.b = b
             return b
         }
         
-        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolA.self, dependency: "some string")) { error in
+      XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolA.self, parameter: "some string")) { error in
             XCTAssertEqual(error as? Container.Errors, .circularDependency)
         }
     }
     
     func test_resolveServiceTypeWithDependency_withTwoWaysCircularDepenedency_throwsAppropriateError_case_1() {
         
-        sut.register(serviceType: ProtocolA.self, dependencyType: String.self) { [weak self] (string)->ProtocolA? in
+      sut.register(serviceType: ProtocolA.self, creatorParameterType: String.self) { [weak self] (string)->ProtocolA? in
             guard let self = self else {
                 return nil
             }
             
-            var b = try self.sut.resolve(serviceType: ProtocolB.self, dependency: "some string")
+          var b = try self.sut.resolve(serviceType: ProtocolB.self, parameter: "some string")
             let a = ClassA()
             a.b = b
             b?.a = a
@@ -228,19 +228,19 @@ class ContainerTests: XCTestCase {
         }
         
        
-        sut.register(serviceType: ProtocolB.self, dependencyType: String.self) { [weak self] (string)->ProtocolB? in
+      sut.register(serviceType: ProtocolB.self, creatorParameterType: String.self) { [weak self] (string)->ProtocolB? in
             guard let self = self else {
                 return nil
             }
             
-            var a = try self.sut.resolve(serviceType: ProtocolA.self, dependency: "some string")
+          var a = try self.sut.resolve(serviceType: ProtocolA.self, parameter: "some string")
             let b = ClassB()
             b.a = a
             a?.b = b
             return b
         }
         
-        XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolB.self, dependency: "some string")) { error in
+      XCTAssertThrowsError(try sut.resolve(serviceType: ProtocolB.self, parameter: "some string")) { error in
             XCTAssertEqual(error as? Container.Errors, .circularDependency)
         }
     }
