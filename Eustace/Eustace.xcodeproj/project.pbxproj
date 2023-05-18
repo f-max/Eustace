@@ -14,7 +14,7 @@
 		50335E882560531F00DE3AB9 /* CarComponentsClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */; };
 		508F5EF6256014F400DAD5F7 /* Eustace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508F5EEC256014F300DAD5F7 /* Eustace.framework */; };
 		508F5EFD256014F400DAD5F7 /* Eustace.h in Headers */ = {isa = PBXBuildFile; fileRef = 508F5EEF256014F400DAD5F7 /* Eustace.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B4C415482A16250400FCD50C /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C415472A16250400FCD50C /* Container.swift */; };
+		B4C4154E2A162C8F00FCD50C /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C4154D2A162C8F00FCD50C /* Container.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +52,8 @@
 		508F5EF0256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		508F5EF5256014F400DAD5F7 /* EustaceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EustaceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		508F5EFC256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B4C415472A16250400FCD50C /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Container.swift; path = "../../Sources/Eustace-SPM/Container.swift"; sourceTree = "<group>"; };
+		B4C4154C2A162BF700FCD50C /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
+		B4C4154D2A162C8F00FCD50C /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Container.swift; path = "../../Sources/Eustace-inPackage/Container.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				506754492570117600479747 /* README.md */,
+				B4C4154C2A162BF700FCD50C /* Package.swift */,
 				508F5EEE256014F300DAD5F7 /* Eustace */,
 				508F5EF9256014F400DAD5F7 /* EustaceTests */,
 				50335E77256015DE00DE3AB9 /* CarConfigurator */,
@@ -117,7 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				508F5EEF256014F400DAD5F7 /* Eustace.h */,
-				B4C415472A16250400FCD50C /* Container.swift */,
+				B4C4154D2A162C8F00FCD50C /* Container.swift */,
 				508F5EF0256014F400DAD5F7 /* Info.plist */,
 			);
 			path = Eustace;
@@ -275,7 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4C415482A16250400FCD50C /* Container.swift in Sources */,
+				B4C4154E2A162C8F00FCD50C /* Container.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
