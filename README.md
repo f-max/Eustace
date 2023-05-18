@@ -75,3 +75,7 @@ This IoC container is able to detect circular dependencies within its resolve fu
 
 github "f-max/Eustace" 
 
+#### Using SPM
+
+In 'Package Dependencies' section add it by using url 'https://github.com/f-max/Eustace'
+
