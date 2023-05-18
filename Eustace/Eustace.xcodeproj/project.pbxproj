@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		50335E79256015DE00DE3AB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E78256015DE00DE3AB9 /* main.swift */; };
-		50335E7E256016AC00DE3AB9 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E7D256016AC00DE3AB9 /* Container.swift */; };
 		50335E82256017DE00DE3AB9 /* ContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E81256017DE00DE3AB9 /* ContainerTests.swift */; };
 		50335E84256043B200DE3AB9 /* CarBreakdownProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */; };
 		50335E8625604B2D00DE3AB9 /* Container+Cars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E8525604B2D00DE3AB9 /* Container+Cars.swift */; };
 		50335E882560531F00DE3AB9 /* CarComponentsClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */; };
 		508F5EF6256014F400DAD5F7 /* Eustace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508F5EEC256014F300DAD5F7 /* Eustace.framework */; };
 		508F5EFD256014F400DAD5F7 /* Eustace.h in Headers */ = {isa = PBXBuildFile; fileRef = 508F5EEF256014F400DAD5F7 /* Eustace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B4C415482A16250400FCD50C /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C415472A16250400FCD50C /* Container.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +42,6 @@
 /* Begin PBXFileReference section */
 		50335E76256015DE00DE3AB9 /* CarConfigurator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CarConfigurator; sourceTree = BUILT_PRODUCTS_DIR; };
 		50335E78256015DE00DE3AB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		50335E7D256016AC00DE3AB9 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		50335E81256017DE00DE3AB9 /* ContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerTests.swift; sourceTree = "<group>"; };
 		50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarBreakdownProtocols.swift; sourceTree = "<group>"; };
 		50335E8525604B2D00DE3AB9 /* Container+Cars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+Cars.swift"; sourceTree = "<group>"; };
@@ -53,6 +52,7 @@
 		508F5EF0256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		508F5EF5256014F400DAD5F7 /* EustaceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EustaceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		508F5EFC256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B4C415472A16250400FCD50C /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Container.swift; path = "../../Sources/Eustace-SPM/Container.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				508F5EEF256014F400DAD5F7 /* Eustace.h */,
-				50335E7D256016AC00DE3AB9 /* Container.swift */,
+				B4C415472A16250400FCD50C /* Container.swift */,
 				508F5EF0256014F400DAD5F7 /* Info.plist */,
 			);
 			path = Eustace;
@@ -214,7 +214,7 @@
 					};
 					508F5EEB256014F300DAD5F7 = {
 						CreatedOnToolsVersion = 11.3.1;
-						LastSwiftMigration = 1130;
+						LastSwiftMigration = 1400;
 					};
 					508F5EF4256014F400DAD5F7 = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -275,7 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50335E7E256016AC00DE3AB9 /* Container.swift in Sources */,
+				B4C415482A16250400FCD50C /* Container.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
