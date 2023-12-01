@@ -9,25 +9,28 @@
 import Foundation
 
 public class Container {
-    enum Errors: Error {
-        case emptyContainerUse
-        case resolvingUnregisteredService
-        case circularDependency
-    }
-    
-    private var repo = [AnyHashable: ()throws->Any?]()
-    private var repoWithDependencies = [AnyHashable: (Any)throws->Any?]()
-    private var resolvedTypes  = [String]()
-    
-    public init() {}
-    
-    static func key<ServiceType>(serviceType: ServiceType) -> String {
-        return String(describing: ServiceType.self)
-    }
-    
-    static func key<ServiceType, CreatorParameterType>(service: ServiceType, creatorParameterType: CreatorParameterType) -> String {
-        return String(describing: ServiceType.self) + "|" + String(describing: CreatorParameterType.self)
-    }
+  enum Errors: Error {
+    case emptyContainerUse
+    case resolvingUnregisteredService
+    case circularDependency
+  }
+  
+  private var repo = [AnyHashable: ()throws->Any?]()
+  private var repoWithDependencies = [AnyHashable: (Any)throws->Any?]()
+  private var resolvedTypes  = [String]()
+  
+  public init() {}
+  
+  static func key<ServiceType>(serviceType: ServiceType) -> String {
+    return String(describing: ServiceType.self)
+  }
+  
+  static func key<ServiceType, CreatorParameterType>(service: ServiceType, creatorParameterType: CreatorParameterType) -> String {
+    return String(describing: ServiceType.self) + "|" + String(describing: CreatorParameterType.self)
+  }
+}
+
+public extension Container {
     
     // MARK: - register/resolve/dispose - with no dependencies
     
@@ -35,14 +38,14 @@ public class Container {
     /// - Parameters:
     ///   - serviceType: the type which we want to register, typically a protocol, but it can also be a class or any other type. e.g. SomeProtocol.self
     ///   - creator: the block which is supposed to return the instance which implements the serviceType above. This block will be called when calling 'resolve'
-    public func register<Service>(serviceType: Service.Type, creator: @escaping (()throws->Service?) ) {
+  func register<Service>(serviceType: Service.Type, creator: @escaping (()throws->Service?) ) {
         let key = Container.key(serviceType: serviceType)
         repo[key] = creator
     }
     
     /// Resolve: use resolve to get new instances of a given service type. The container will `resolve` the provided service type to a specific concrete implementation, according to the instructions previously provided by `register`. Throws un error unable to find a match for the provided service type.
     /// - Parameter serviceType: the service type we want to resolve, the returned instance will assumably belong/subclass/conform to the provided service type
-    public func resolve<Service>(serviceType: Service.Type) throws -> Service? {
+  func resolve<Service>(serviceType: Service.Type) throws -> Service? {
         guard repo.count > 0 else {
             throw Errors.emptyContainerUse 
         }
@@ -62,7 +65,7 @@ public class Container {
     
     /// Dispose: opposite as register: it cleans the container removing the entry related to the provided service type. Once done that, if that service is not re-registered, calling resolve with the same service type will result in throwing an error
     /// - Parameter serviceType: the service type associated to the entry we want to remove from the container, it is used as a `key` to find the entry to remove
-    public func dispose<Service>(serviceType: Service) {
+  func dispose<Service>(serviceType: Service) {
         let key = Container.key(serviceType: serviceType)
         repo[key] = nil
     }
@@ -120,6 +123,8 @@ public extension Container {
         repoWithDependencies[key] = nil
     }
 }
+
+
 
 public extension Container {
     
