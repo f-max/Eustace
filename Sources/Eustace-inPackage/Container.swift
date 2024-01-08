@@ -27,7 +27,6 @@ public class Container {
   
   static func key<ServiceType, CreatorParameterType>(service: ServiceType, creatorParameterType: CreatorParameterType) -> String {
     let string = String(describing: ServiceType.self) + "|" + String(describing: CreatorParameterType.self)
-    print(string)
     return string
   }
 }
