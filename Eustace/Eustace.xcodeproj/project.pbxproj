@@ -7,11 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		50335E79256015DE00DE3AB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E78256015DE00DE3AB9 /* main.swift */; };
 		50335E82256017DE00DE3AB9 /* ContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E81256017DE00DE3AB9 /* ContainerTests.swift */; };
-		50335E84256043B200DE3AB9 /* CarBreakdownProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */; };
-		50335E8625604B2D00DE3AB9 /* Container+Cars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E8525604B2D00DE3AB9 /* Container+Cars.swift */; };
-		50335E882560531F00DE3AB9 /* CarComponentsClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */; };
 		508F5EF6256014F400DAD5F7 /* Eustace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508F5EEC256014F300DAD5F7 /* Eustace.framework */; };
 		508F5EFD256014F400DAD5F7 /* Eustace.h in Headers */ = {isa = PBXBuildFile; fileRef = 508F5EEF256014F400DAD5F7 /* Eustace.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B4C4154E2A162C8F00FCD50C /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C4154D2A162C8F00FCD50C /* Container.swift */; };
@@ -27,25 +23,8 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		50335E74256015DE00DE3AB9 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		50335E76256015DE00DE3AB9 /* CarConfigurator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CarConfigurator; sourceTree = BUILT_PRODUCTS_DIR; };
-		50335E78256015DE00DE3AB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		50335E81256017DE00DE3AB9 /* ContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerTests.swift; sourceTree = "<group>"; };
-		50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarBreakdownProtocols.swift; sourceTree = "<group>"; };
-		50335E8525604B2D00DE3AB9 /* Container+Cars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+Cars.swift"; sourceTree = "<group>"; };
-		50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarComponentsClasses.swift; sourceTree = "<group>"; };
 		506754492570117600479747 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		508F5EEC256014F300DAD5F7 /* Eustace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eustace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508F5EEF256014F400DAD5F7 /* Eustace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Eustace.h; sourceTree = "<group>"; };
@@ -57,13 +36,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		50335E73256015DE00DE3AB9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		508F5EE9256014F300DAD5F7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -82,17 +54,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		50335E77256015DE00DE3AB9 /* CarConfigurator */ = {
-			isa = PBXGroup;
-			children = (
-				50335E78256015DE00DE3AB9 /* main.swift */,
-				50335E83256043B200DE3AB9 /* CarBreakdownProtocols.swift */,
-				50335E872560531F00DE3AB9 /* CarComponentsClasses.swift */,
-				50335E8525604B2D00DE3AB9 /* Container+Cars.swift */,
-			);
-			path = CarConfigurator;
-			sourceTree = "<group>";
-		};
 		508F5EE2256014F300DAD5F7 = {
 			isa = PBXGroup;
 			children = (
@@ -100,7 +61,6 @@
 				B4C4154C2A162BF700FCD50C /* Package.swift */,
 				508F5EEE256014F300DAD5F7 /* Eustace */,
 				508F5EF9256014F400DAD5F7 /* EustaceTests */,
-				50335E77256015DE00DE3AB9 /* CarConfigurator */,
 				508F5EED256014F300DAD5F7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -110,7 +70,6 @@
 			children = (
 				508F5EEC256014F300DAD5F7 /* Eustace.framework */,
 				508F5EF5256014F400DAD5F7 /* EustaceTests.xctest */,
-				50335E76256015DE00DE3AB9 /* CarConfigurator */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -148,23 +107,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		50335E75256015DE00DE3AB9 /* CarConfigurator */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 50335E7A256015DE00DE3AB9 /* Build configuration list for PBXNativeTarget "CarConfigurator" */;
-			buildPhases = (
-				50335E72256015DE00DE3AB9 /* Sources */,
-				50335E73256015DE00DE3AB9 /* Frameworks */,
-				50335E74256015DE00DE3AB9 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = CarConfigurator;
-			productName = CarConfigurator;
-			productReference = 50335E76256015DE00DE3AB9 /* CarConfigurator */;
-			productType = "com.apple.product-type.tool";
-		};
 		508F5EEB256014F300DAD5F7 /* Eustace */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 508F5F00256014F400DAD5F7 /* Build configuration list for PBXNativeTarget "Eustace" */;
@@ -211,9 +153,6 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "f-max";
 				TargetAttributes = {
-					50335E75256015DE00DE3AB9 = {
-						CreatedOnToolsVersion = 11.3.1;
-					};
 					508F5EEB256014F300DAD5F7 = {
 						CreatedOnToolsVersion = 11.3.1;
 						LastSwiftMigration = 1400;
@@ -239,7 +178,6 @@
 			targets = (
 				508F5EEB256014F300DAD5F7 /* Eustace */,
 				508F5EF4256014F400DAD5F7 /* EustaceTests */,
-				50335E75256015DE00DE3AB9 /* CarConfigurator */,
 			);
 		};
 /* End PBXProject section */
@@ -262,17 +200,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		50335E72256015DE00DE3AB9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				50335E8625604B2D00DE3AB9 /* Container+Cars.swift in Sources */,
-				50335E84256043B200DE3AB9 /* CarBreakdownProtocols.swift in Sources */,
-				50335E882560531F00DE3AB9 /* CarComponentsClasses.swift in Sources */,
-				50335E79256015DE00DE3AB9 /* main.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		508F5EE8256014F300DAD5F7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -300,24 +227,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		50335E7B256015DE00DE3AB9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		50335E7C256015DE00DE3AB9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		508F5EFE256014F400DAD5F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -534,15 +443,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		50335E7A256015DE00DE3AB9 /* Build configuration list for PBXNativeTarget "CarConfigurator" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				50335E7B256015DE00DE3AB9 /* Debug */,
-				50335E7C256015DE00DE3AB9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		508F5EE6256014F300DAD5F7 /* Build configuration list for PBXProject "Eustace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
