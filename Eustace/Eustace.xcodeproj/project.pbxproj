@@ -10,6 +10,7 @@
 		50335E82256017DE00DE3AB9 /* ContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50335E81256017DE00DE3AB9 /* ContainerTests.swift */; };
 		508F5EF6256014F400DAD5F7 /* Eustace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508F5EEC256014F300DAD5F7 /* Eustace.framework */; };
 		508F5EFD256014F400DAD5F7 /* Eustace.h in Headers */ = {isa = PBXBuildFile; fileRef = 508F5EEF256014F400DAD5F7 /* Eustace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B43F4DFA2B4C6E1E00E8ECB7 /* Containing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43F4DF92B4C6E1E00E8ECB7 /* Containing.swift */; };
 		B4C4154E2A162C8F00FCD50C /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C4154D2A162C8F00FCD50C /* Container.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		508F5EF0256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		508F5EF5256014F400DAD5F7 /* EustaceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EustaceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		508F5EFC256014F400DAD5F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B43F4DF92B4C6E1E00E8ECB7 /* Containing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Containing.swift; sourceTree = "<group>"; };
 		B4C4154C2A162BF700FCD50C /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		B4C4154D2A162C8F00FCD50C /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Container.swift; path = "../../Sources/Eustace-inPackage/Container.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -80,6 +82,7 @@
 				508F5EEF256014F400DAD5F7 /* Eustace.h */,
 				B4C4154D2A162C8F00FCD50C /* Container.swift */,
 				508F5EF0256014F400DAD5F7 /* Info.plist */,
+				B43F4DF92B4C6E1E00E8ECB7 /* Containing.swift */,
 			);
 			path = Eustace;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4C4154E2A162C8F00FCD50C /* Container.swift in Sources */,
+				B43F4DFA2B4C6E1E00E8ECB7 /* Containing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
